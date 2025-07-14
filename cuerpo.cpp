@@ -9,13 +9,11 @@
 Cuerpo::Cuerpo(double radioFisico, QPointF posicionInicial, QPointF velocidadInicial, double masa, QColor color)
     : posicionFisica(posicionInicial),velocidad(velocidadInicial),masa(masa),radioFisico(radioFisico)
 {
-    // Inicialización de gráfica
-    actualizarGrafica();  // Set rect y posición visual
+    actualizarGrafica();
 
     setBrush(color);
     setPen(Qt::NoPen);
 
-    // Inicialización trayectoria
     path.moveTo(posicionFisica);
     trayectoria = new QGraphicsPathItem();
     trayectoria->setPen(QPen(color, 1));

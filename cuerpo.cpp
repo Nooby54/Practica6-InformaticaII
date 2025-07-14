@@ -25,14 +25,14 @@ void Cuerpo::calcularAceleracion(const QList<Cuerpo*> &otros) {
     for (Cuerpo *otro : otros) {
         if (otro == this) continue;
 
-        QPointF rVec = otro->posicionFisica - posicionFisica;
-        double dist2 = qPow(rVec.x(), 2) + qPow(rVec.y(), 2);
-        double dist = qSqrt(dist2);
+        QPointF vectorPosicion = otro->posicionFisica - posicionFisica;
+        double distanciaala2 = qPow(vectorPosicion.x(), 2) + qPow(vectorPosicion.y(), 2);
+        double distancia = qSqrt(distanciaala2);
 
-        if (dist < 1.0) continue;
+        if (distancia < 1.0) continue;
 
-        QPointF dir = rVec / dist;
-        double a = G * otro->masa / dist2;
+        QPointF dir = vectorPosicion / distancia;
+        double a = G * otro->masa / distanciaala2;
         aceleracion += dir * a;
     }
 }

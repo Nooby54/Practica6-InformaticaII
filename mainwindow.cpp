@@ -1,11 +1,54 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "cuerpo.h"
+#include <QTimer>
+#include <QGraphicsTextItem>
+#include <QGraphicsPolygonItem>
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    escena = new QGraphicsScene(this);
+    escena->setSceneRect(0, 0, 800, 800);
+    ui->graphicsView->setScene(escena);
+    ui->graphicsView->setFixedSize(800, 800);
+    this->setFixedSize(826, 826);
+    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    // === Sistema 1 ===
+
+    Cuerpo *c1 = new Cuerpo(120, QPointF(0, -7000), QPointF(2, 0), 70, Qt::black);
+    Cuerpo *c2 = new Cuerpo(300, QPointF(0, 0),     QPointF(0, 0), 70000, Qt::white);
+    Cuerpo *c3 = new Cuerpo(100, QPointF(4000, 5000), QPointF(-1.6, 1.2), 25, Qt::blue);
+
+    cuerposSimulados = {c1, c2, c3};
+    /*
+    // === Sistema 2 ===
+    Cuerpo *c1 = new Cuerpo(200, QPointF(0, 0), QPointF(0, 0), 50000, Qt::black);
+    Cuerpo *c2 = new Cuerpo(70, QPointF(-5000, 0),     QPointF(0, -2), 70, Qt::blue);
+    Cuerpo *c3 = new Cuerpo(70, QPointF(5000, 0), QPointF(0, 2), 70, Qt::red);
+    Cuerpo *c4 = new Cuerpo(70, QPointF(0, -5000), QPointF(2, 0), 70, Qt::green);
+    Cuerpo *c5 = new Cuerpo(70, QPointF(0, 5000),     QPointF(-2, 0), 70, Qt::cyan);
+
+    cuerposSimulados = {c1, c2, c3, c4, c5};
+*/
+    for (Cuerpo *c : std::as_const(cuerposSimulados)) {
+        escena->addItem(c->trayectoria);
+        escena->addItem(c);
+    }
+
+    timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, [=]() {
+        for (Cuerpo *c : std::as_const(cuerposSimulados))
+            c->calcularAceleracion(cuerposSimulados);
+        for (Cuerpo *c : std::as_const(cuerposSimulados)) {
+            c->mover();
+            c->actualizarGrafica();
+            c->actualizarTrayectoria();
+        }
+    });
+    timer->start(16);
 }
 
 MainWindow::~MainWindow()

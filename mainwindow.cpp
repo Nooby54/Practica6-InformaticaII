@@ -32,13 +32,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
             archivo << "\n";
         }
     });
-
-    archivo.open("../../data/salida.txt");
-    for (int i = 0; i < cuerposSimulados.size(); ++i) {
-        archivo << "x" << (i+1) << "\t" << "y" << (i+1);
-        if (i < cuerposSimulados.size() - 1) archivo << "\t";
-    }
-    archivo << "\n";
 }
 
 MainWindow::~MainWindow()
@@ -71,6 +64,12 @@ void MainWindow::on_sistema1_clicked()
         escena->addItem(c);
     }
 
+    archivo.open("../../data/salida.txt");
+    for (int i = 0; i < cuerposSimulados.size(); ++i) {
+        archivo << "x" << (i+1) << "\t" << "y" << (i+1);
+        if (i < cuerposSimulados.size() - 1) archivo << "\t";
+    }
+    archivo << "\n";
     timer->start(16);
 }
 
@@ -95,6 +94,12 @@ void MainWindow::on_sistema2_clicked()
         escena->addItem(c);
     }
 
+    archivo.open("../../data/salida.txt");
+    for (int i = 0; i < cuerposSimulados.size(); ++i) {
+        archivo << "x" << (i+1) << "\t" << "y" << (i+1);
+        if (i < cuerposSimulados.size() - 1) archivo << "\t";
+    }
+    archivo << "\n";
     timer->start(16);
 }
 

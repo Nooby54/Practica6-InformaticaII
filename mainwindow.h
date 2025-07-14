@@ -5,6 +5,7 @@
 #include <QGraphicsScene>
 #include <QTimer>
 #include "cuerpo.h"
+#include <fstream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -14,7 +15,6 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    void extracted();
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
@@ -23,6 +23,7 @@ private:
     QGraphicsScene *escena;
     QTimer *timer;
     QList<Cuerpo *> cuerposSimulados;
+    std::ofstream archivo;
 };
 
 #endif // MAINWINDOW_H

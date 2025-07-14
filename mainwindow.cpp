@@ -4,6 +4,7 @@
 #include <QTimer>
 #include <QGraphicsTextItem>
 #include <QGraphicsPolygonItem>
+#include <fstream>
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -47,11 +48,24 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
             c->actualizarGrafica();
             c->actualizarTrayectoria();
         }
+        if (archivo) {
+            for (Cuerpo *c : std::as_const(cuerposSimulados))
+                archivo << c->posicionFisica.x() << "\t" << c->posicionFisica.y() << "\t";
+            archivo << "\n";
+        }
     });
+
+    archivo.open("../../data/salida.txt");
+    for (int i = 0; i < cuerposSimulados.size(); ++i) {
+        archivo << "x" << (i+1) << "\t" << "y" << (i+1);
+        if (i < cuerposSimulados.size() - 1) archivo << "\t";
+    }
+    archivo << "\n";
     timer->start(16);
 }
 
 MainWindow::~MainWindow()
 {
+    archivo.close();
     delete ui;
 }
